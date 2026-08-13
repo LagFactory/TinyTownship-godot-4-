@@ -7,4 +7,5 @@ func _ready():
 
 
 func _on_timer_timeout() -> void:
-	queue_free()
+	if is_instance_valid(self) and not is_queued_for_deletion():
+		queue_free()

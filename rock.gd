@@ -26,7 +26,7 @@ func harvest_action() -> void:
 				
 				# 3. Add the debris to the main game world
 				# We add it to the current_scene so it does not get deleted when the main rock is destroyed
-				get_tree().current_scene.add_child(debris)
+				add_sibling(debris)
 				
 				# 4. Set the starting position to the main rock's position
 				# We add a slight random offset so they do not spawn perfectly inside each other
