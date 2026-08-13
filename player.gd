@@ -55,7 +55,6 @@ func _physics_process(delta):
 			
 			if root_instance != null:
 				# If it's a harvestable object, assign it to new_target
-				print("raycast hit object")
 				if root_instance.has_method("harvest_action"):
 					new_target = root_instance 
 					

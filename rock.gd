@@ -20,7 +20,7 @@ func harvest_action() -> void:
 		# 1. Check if a debris scene is assigned to prevent crashes
 		if debris_scene != null:
 			Inventory.add_resource("stone", 3)
-			# 2. Loop to spawn 5 pieces of debris (adjust this number as needed)
+			# 2. Loop to spawn pieces of debris 
 			for i in range(20):
 				var debris = debris_scene.instantiate()
 				

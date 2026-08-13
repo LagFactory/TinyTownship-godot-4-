@@ -1,14 +1,10 @@
 extends WorldEnvironment
 
-# 1. Export variables so you can drag and drop your tree.tscn and rock.tscn in the Inspector
 @export var tree_scene: PackedScene
 @export var rock_scene: PackedScene
 
-# Adjust how many of each you want to spawn
 @export var tree_count: int = 50
 @export var rock_count: int = 10
-
-var spawned_objects_data = []
 
 func _ready():
 	var world_surface = %CSGBox3D
@@ -24,21 +20,19 @@ func _ready():
 	
 	var top_y = surface_pos.y + (surface_size.y / 2.0)
 	
+	# We use 'await' here because the spawn function must pause to wait for physics updates
 	for i in range(tree_count):
-		spawn_with_spacing(tree_scene, min_x, max_x, min_z, max_z, top_y)
+		await spawn_with_spacing(tree_scene, min_x, max_x, min_z, max_z, top_y)
 		
 	for i in range(rock_count):
-		spawn_with_spacing(rock_scene, min_x, max_x, min_z, max_z, top_y)
+		await spawn_with_spacing(rock_scene, min_x, max_x, min_z, max_z, top_y)
 
-# Notice we no longer pass the type or distances into this function
 func spawn_with_spacing(scene: PackedScene, min_x: float, max_x: float, min_z: float, max_z: float, y_pos: float):
 	if scene == null:
 		return
 		
-	# 1. Create the instance immediately so we can read its built-in rules
 	var instance = scene.instantiate()
 	
-	# 2. Extract the rules, using safe fallbacks in case we forgot to add them to a new object
 	var obj_type = instance.get("object_type") if "object_type" in instance else "unknown"
 	var like_dist = instance.get("like_dist") if "like_dist" in instance else 2.0
 	var any_dist = instance.get("any_dist") if "any_dist" in instance else 2.0
@@ -48,7 +42,6 @@ func spawn_with_spacing(scene: PackedScene, min_x: float, max_x: float, min_z: f
 	var successfully_placed = false
 	var candidate_pos = Vector3.ZERO
 	
-	# 3. Search for a valid location using the extracted rules
 	while attempt < max_attempts and not successfully_placed:
 		candidate_pos = Vector3(randf_range(min_x, max_x), y_pos, randf_range(min_z, max_z))
 		
@@ -57,25 +50,49 @@ func spawn_with_spacing(scene: PackedScene, min_x: float, max_x: float, min_z: f
 			
 		attempt += 1
 		
-	# 4. If we found a spot, add it to the world and track it
 	if successfully_placed:
 		add_child(instance)
 		
 		instance.global_position = candidate_pos
 		instance.rotation_degrees.y = randf_range(0.0, 360.0)
 		
-		spawned_objects_data.append({"position": candidate_pos, "type": obj_type})
+		# CRITICAL: Pause execution for one physics tick. 
+		# This gives Godot time to register the new object's collision shape in the world.
+		await get_tree().physics_frame
 	else:
-		# 5. If we failed to find a spot, destroy the unused instance to free memory
 		instance.queue_free()
 		print("Warning: Could not find a safe spot to spawn a ", obj_type)
 
-
 func position_is_valid(target_pos: Vector3, new_object_type: String, like_dist: float, any_dist: float) -> bool:
-	for existing_object in spawned_objects_data:
-		var distance = target_pos.distance_to(existing_object["position"])
+	# 1. Access the physical space of the game world
+	var space_state = get_viewport().get_world_3d().direct_space_state
+	
+	# 2. Create an invisible sphere to act as our scanner
+	var sphere = SphereShape3D.new()
+	sphere.radius = max(like_dist, any_dist) # Make it as big as our largest requirement
+	
+	# 3. Configure the scan parameters
+	var query = PhysicsShapeQueryParameters3D.new()
+	query.shape = sphere
+	query.transform = Transform3D(Basis(), target_pos)
+	
+	# 4. Perform the scan! Returns an array of dictionaries for everything touched.
+	var hits = space_state.intersect_shape(query)
+	
+	for hit in hits:
+		var collider = hit.collider
 		
-		if existing_object["type"] == new_object_type:
+		# Try to find the object_type variable. 
+		# We check both the collider itself and its parent node just in case.
+		var hit_type = "unknown"
+		if "object_type" in collider:
+			hit_type = collider.object_type
+		elif collider.get_parent() != null and "object_type" in collider.get_parent():
+			hit_type = collider.get_parent().object_type
+			
+		var distance = target_pos.distance_to(collider.global_position)
+		
+		if hit_type == new_object_type:
 			if distance < like_dist:
 				return false
 		else:
