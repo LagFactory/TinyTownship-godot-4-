@@ -1,0 +1,8 @@
+class_name Forester extends ResourceCollectionBuilding
+
+@export var replanting_enabled: bool = true
+@export var tree_growth_speed: float = 1.0
+
+func _ready() -> void:
+	building_type = "forester"
+	resource_gathered = "wood"
