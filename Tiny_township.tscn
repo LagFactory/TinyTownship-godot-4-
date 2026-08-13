@@ -1,0 +1,36 @@
+[gd_scene format=3 uid="uid://ckavqb25bdaul"]
+
+[ext_resource type="Texture2D" uid="uid://ckflyud50qex" path="res://checkboard.png" id="1_6nmrv"]
+[ext_resource type="Script" uid="uid://dcs4o6ujlp050" path="res://tiny_township.gd" id="1_vprih"]
+[ext_resource type="PackedScene" uid="uid://ckudr8chj1kgo" path="res://player.tscn" id="2_p1qo6"]
+[ext_resource type="PackedScene" uid="uid://6mo7lrqbphwj" path="res://rock.tscn" id="3_vprih"]
+[ext_resource type="PackedScene" uid="uid://cl5eaekxll7ek" path="res://tree.tscn" id="4_6v7df"]
+
+[sub_resource type="Environment" id="Environment_tbhvd"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tbhvd"]
+albedo_color = Color(0.016896384, 0.40325117, 0.037084743, 1)
+albedo_texture = ExtResource("1_6nmrv")
+uv1_triplanar = true
+
+[node name="World" type="WorldEnvironment" unique_id=227412170]
+environment = SubResource("Environment_tbhvd")
+script = ExtResource("1_vprih")
+tree_scene = ExtResource("4_6v7df")
+rock_scene = ExtResource("3_vprih")
+
+[node name="CSGCombiner3D" type="CSGCombiner3D" parent="." unique_id=790371811]
+autosmooth = true
+use_collision = true
+
+[node name="CSGBox3D" type="CSGBox3D" parent="CSGCombiner3D" unique_id=469684222]
+unique_name_in_owner = true
+use_collision = true
+size = Vector3(50, 5, 50)
+material = SubResource("StandardMaterial3D_tbhvd")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=799617877]
+transform = Transform3D(0.9431943, 0.12877235, 0.30627134, -0.3322415, 0.3655694, 0.869468, 0, -0.92183334, 0.3875865, 55.628212, 23.03962, 30.358912)
+
+[node name="Player" parent="." unique_id=837442009 instance=ExtResource("2_p1qo6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.358955, 3.5346956, -6.2191963)
