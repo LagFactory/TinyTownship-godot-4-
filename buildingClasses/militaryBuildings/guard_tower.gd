@@ -4,4 +4,5 @@ class_name GuardTower extends MilitaryBuilding
 @export var alarm_active: bool = false
 
 func _ready() -> void:
-	building_type = "guard_tower"
+	super._ready()
+	military_type = MilitaryBuildingsType.GUARDTOWER

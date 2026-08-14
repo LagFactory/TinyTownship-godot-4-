@@ -4,5 +4,5 @@ class_name Mine extends ResourceCollectionBuilding
 @export var mine_depth: int = 1
 
 func _ready() -> void:
-	building_type = "mine"
-	resource_gathered = "stone" # Default starting resource
+	super._ready()
+	colection_type = reasourceColectionBuildingsType.MINE

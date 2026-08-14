@@ -1,9 +1,15 @@
 class_name MilitaryBuilding extends Building
 
-@export var garrison_list: Array[String] = []
-@export var max_garrison: int = 5
 @export var defense_rating: int = 10
-@export var upgrades_list: Array[String] = []
+@export var military_power: int = 1
+@export var military_type: MilitaryBuildingsType 
 
-func has_garrison_space() -> bool:
-	return garrison_list.size() < max_garrison
+
+enum MilitaryBuildingsType{
+	GUARDTOWER,
+	BARRACKS,
+	TRAININGCAMP
+}
+
+func _ready() -> void:
+	building_type = buildingCatagory.MILITARY

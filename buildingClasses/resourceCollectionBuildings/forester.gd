@@ -4,5 +4,5 @@ class_name Forester extends ResourceCollectionBuilding
 @export var tree_growth_speed: float = 1.0
 
 func _ready() -> void:
-	building_type = "forester"
-	resource_gathered = "wood"
+	super._ready()
+	colection_type = reasourceColectionBuildingsType.FORESTER

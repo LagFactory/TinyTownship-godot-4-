@@ -5,4 +5,5 @@ class_name Blacksmith extends ProductionBuilding
 @export var products_list: Array[String] = ["tools", "weapons"]
 
 func _ready() -> void:
-	building_type = "blacksmith"
+	super._ready()
+	production_type = ProductionBuildingsType.BLACKSMITH

@@ -1,10 +1,8 @@
 class_name ResidentialBuilding extends Building
+@export var comfort_factor: int
+@export var resisential_type: residentialBuildingsType
 
-# Variables shared by all housing structures
-@export var occupants_list: Array[String] = []
-@export var max_occupants: int = 4
-@export var upgrades_list: Array[String] = []
-
-# Optional: A function to check if the house has open beds
-func has_vacancy() -> bool:
-	return occupants_list.size() < max_occupants
+enum residentialBuildingsType{
+	HOUSE,
+	DORM
+}

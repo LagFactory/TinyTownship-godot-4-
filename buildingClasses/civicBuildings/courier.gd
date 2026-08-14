@@ -4,4 +4,5 @@ class_name Courier extends CivicBuilding
 @export var connected_routes: Array[String] = []
 
 func _ready() -> void:
-	building_type = "courier"
+	super._ready()
+	civic_type = CivilBuildingsType.COURIER
