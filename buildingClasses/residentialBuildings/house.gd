@@ -4,4 +4,4 @@ class_name House extends ResidentialBuilding
 
 func _ready() -> void:
 	super._ready()
-	resisential_type = residentialBuildingsType
+	residential_type = residentialBuildingsType.HOUSE

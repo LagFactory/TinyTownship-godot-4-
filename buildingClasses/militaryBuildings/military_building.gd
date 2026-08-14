@@ -12,4 +12,5 @@ enum MilitaryBuildingsType{
 }
 
 func _ready() -> void:
-	building_type = buildingCatagory.MILITARY
+	building_type = BuildingCategory.MILITARY
+	super._ready()

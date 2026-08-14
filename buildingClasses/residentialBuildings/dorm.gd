@@ -4,4 +4,4 @@ class_name Dorm extends ResidentialBuilding
 
 func _ready() -> void:
 	super._ready()
-	resisential_type = residentialBuildingsType.DORM
+	residential_type = residentialBuildingsType.DORM

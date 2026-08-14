@@ -1,5 +1,5 @@
 class_name CivicBuilding extends Building
-@export var CivilScore: int 
+@export var civil_score: int 
 @export var civic_type: CivilBuildingsType
 
 enum CivilBuildingsType{
@@ -9,3 +9,4 @@ enum CivilBuildingsType{
 
 func _ready() -> void:
 	building_type = buildingCatagory.CIVIC
+	super._ready()
