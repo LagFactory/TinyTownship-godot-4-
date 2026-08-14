@@ -1,55 +1,43 @@
 class_name Building extends Node3D
 
-enum BuildingCategory {
-	NONE,
-	RESIDENTIAL,
-	CIVIC,
-	PRODUCTION,
-	COLLECTION,
-	MILITARY
-}
+# 1. The slot for your new .tres data file
+@export var data: BuildingData
 
-
-@export var building_id: String
-@export var building_name: String
-@export var building_level: int
-@export var resources_needed: Dictionary # e.g., {"wood": 50, "stone": 20}
-@export var building_type: BuildingCategory
-@export var tags_list: Array[String]
+# 2. DYNAMIC STATE (Variables that change during gameplay)
 @export var worker_ocupants_list: Array[String] = []
-@export var max_workers_ocupants: int = 1
-@export var upgrades_list: Array[String] = []
-@export var inventory : Dictionary = {}
-@export var max_inventory_size : int = 5
-
-# This holds your temporary .tscn file
-@export var building_design: PackedScene 
+@export var inventory: Dictionary = {}
 
 func _ready() -> void:
-	initialize_visuals()
+	# Add a safety check in case you forget to assign a .tres file in the editor
+	if data != null:
+		initialize_visuals()
+	else:
+		push_warning("Building data is missing on node: ", name)
 
-# A dedicated function you can override later
 func initialize_visuals() -> void:
-	if building_design != null:
-		var visuals = building_design.instantiate()
+	if data.building_design != null:
+		var visuals = data.building_design.instantiate()
 		add_child(visuals)
-		
+
 func add_to_inventory(amount: int, item_name: String) -> void:
+	if data == null:
+		return
+		
 	var current_total_storage = 0
 	
 	# Calculate current used space
 	for key in inventory:
 		current_total_storage += inventory[key]
 		
-	# Check if the full amount fits
-	if current_total_storage + amount <= max_inventory_size:
+	# Check if the full amount fits using the data resource
+	if current_total_storage + amount <= data.max_inventory_size:
 		if inventory.has(item_name):
 			inventory[item_name] += amount
 		else:
 			inventory[item_name] = amount
 	else:
-		# If it does not fit perfectly, calculate the remaining space
-		var space_left = max_inventory_size - current_total_storage
+		# If it does not fit perfectly, calculate the remaining space using the data resource
+		var space_left = data.max_inventory_size - current_total_storage
 		
 		if space_left > 0:
 			if inventory.has(item_name):

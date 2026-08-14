@@ -9,5 +9,5 @@ enum ProductionBuildingsType{
 }
 
 func _ready() -> void:
-	building_type = BuildingCategory.PRODUCTION
+
 	super._ready()

@@ -4,7 +4,6 @@ class_name ResidentialBuilding extends Building
 
 
 func _ready() -> void:
-	building_type = BuildingCategory.RESIDENTIAL
 	super._ready()
 
 enum residentialBuildingsType{

@@ -12,5 +12,5 @@ enum ResourceCollectionBuildingsType{
 
 func _ready() -> void:
 	# Automatically tell the base class what category this is!
-	building_type = BuildingCategory.COLLECTION
+	
 	super._ready()

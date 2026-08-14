@@ -8,5 +8,4 @@ enum CivilBuildingsType{
 }
 
 func _ready() -> void:
-	building_type = buildingCatagory.CIVIC
 	super._ready()
