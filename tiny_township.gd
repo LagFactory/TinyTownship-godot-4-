@@ -3,8 +3,8 @@ extends WorldEnvironment
 @export var tree_scene: PackedScene
 @export var rock_scene: PackedScene
 
-@export var tree_count: int = 50
-@export var rock_count: int = 10
+@export var tree_count: int = 500
+@export var rock_count: int = 100
 
 func _ready():
 	var world_surface = %CSGBox3D
