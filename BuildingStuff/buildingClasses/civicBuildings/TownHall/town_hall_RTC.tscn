@@ -19,3 +19,9 @@ shape = SubResource("BoxShape3D_tbhvd")
 
 [node name="Camera3D" type="Camera3D" parent="." unique_id=1730816458]
 transform = Transform3D(0.86602545, 0.24999999, -0.43301272, 0, 0.8660254, 0.50000006, 0.5, -0.43301266, 0.75, -7, 6, 12)
+
+[node name="BuildingName" type="Label3D" parent="." unique_id=2019196991]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)
+billboard = 1
+text = "BUILDIN TYPE"
+font_size = 42

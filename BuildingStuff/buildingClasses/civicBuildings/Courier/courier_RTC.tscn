@@ -1,3 +1,27 @@
 [gd_scene format=3 uid="uid://h45d2sri31xv"]
 
+[ext_resource type="Script" uid="uid://dr4p1211w4ij2" path="res://BuildingStuff/buildingClasses/civicBuildings/Courier/courier.gd" id="1_uq1h8"]
+[ext_resource type="Resource" uid="uid://b5moi0biym3bj" path="res://BuildingStuff/buildingClasses/civicBuildings/Courier/default_courier.tres" id="2_vmked"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_eiwve"]
+size = Vector3(0.48388672, 1, 0.001)
+
 [node name="CourierRtc" type="Node3D" unique_id=736820855]
+script = ExtResource("1_uq1h8")
+data = ExtResource("2_vmked")
+
+[node name="InteriorTrigger" type="Area3D" parent="." unique_id=1265358340]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="InteriorTrigger" unique_id=109321479]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.25805664, 0, 0.00049999356)
+shape = SubResource("BoxShape3D_eiwve")
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=1288782212]
+transform = Transform3D(0.86602545, 0.24999999, -0.43301272, 0, 0.8660254, 0.50000006, 0.5, -0.43301266, 0.75, -7, 6, 12)
+
+[node name="BuildingName" type="Label3D" parent="." unique_id=950717962]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)
+billboard = 1
+text = "BUILDIN TYPE"
+font_size = 42
