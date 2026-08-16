@@ -12,6 +12,7 @@ enum BuildingCategory {
 # --- STATIC DATA ---
 @export var building_id: String
 @export var building_name: String
+@export var is_unlocked: bool = false
 @export var building_level: int
 @export var resources_needed: Dictionary = {
 	"wood":0,
@@ -27,3 +28,4 @@ enum BuildingCategory {
 
 # This holds your temporary .tscn file or future .glb mesh
 @export var building_design: PackedScene
+@export var rtc_scene: PackedScene

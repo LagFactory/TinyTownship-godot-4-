@@ -1,14 +1,12 @@
 [gd_scene format=3 uid="uid://h45d2sri31xv"]
 
 [ext_resource type="Script" uid="uid://dr4p1211w4ij2" path="res://BuildingStuff/buildingClasses/civicBuildings/Courier/courier.gd" id="1_uq1h8"]
-[ext_resource type="Resource" uid="uid://b5moi0biym3bj" path="res://BuildingStuff/buildingClasses/civicBuildings/Courier/default_courier.tres" id="2_vmked"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_eiwve"]
 size = Vector3(0.48388672, 1, 0.001)
 
 [node name="CourierRtc" type="Node3D" unique_id=736820855]
 script = ExtResource("1_uq1h8")
-data = ExtResource("2_vmked")
 
 [node name="InteriorTrigger" type="Area3D" parent="." unique_id=1265358340]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)

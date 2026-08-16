@@ -1,11 +1,13 @@
 [gd_resource type="Resource" script_class="BuildingData" format=3 uid="uid://0s7jvoi680tb"]
 
 [ext_resource type="PackedScene" uid="uid://bekkn8dmewxcs" path="res://BuildingStuff/buildingModels/debugBuildingModel.tscn" id="1_jwjua"]
+[ext_resource type="PackedScene" uid="uid://tjwh71uu5c73" path="res://BuildingStuff/buildingClasses/civicBuildings/TownHall/town_hall_RTC.tscn" id="2_1elvy"]
 [ext_resource type="Script" uid="uid://b1rg037364ud1" path="res://BuildingStuff/building_data.gd" id="2_wu5bt"]
 
 [resource]
 script = ExtResource("2_wu5bt")
 building_name = "townHall"
+is_unlocked = true
 resources_needed = {
 "bricks": 0,
 "mud": 0,
@@ -14,4 +16,5 @@ resources_needed = {
 "wood": 5
 }
 building_design = ExtResource("1_jwjua")
+rtc_scene = ExtResource("2_1elvy")
 metadata/_custom_type_script = "uid://b1rg037364ud1"

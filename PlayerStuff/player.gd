@@ -22,6 +22,13 @@ extends CharacterBody3D
 @export var building_to_place: BuildingData
 @export var building_rtc_scene: PackedScene
 
+
+
+# A simple toggle tracker for the temporary input
+var is_building_town_hall: bool = true
+
+
+
 var current_target: Node3D = null
 
 
@@ -39,53 +46,60 @@ func _unhandled_input(event):
 		# Verify we are looking at something, and that it has the harvest function
 		if current_target != null and current_target.has_method("harvest_action"):
 			current_target.harvest_action()
-	elif event.is_action_pressed("build"):
-		if building_to_place != null and building_rtc_scene != null:
-			attempt_build()
+	if event.is_action_pressed("build"):
+		# Ask the manager for the data
+		var active_data = BuildingManager.get_active_building()
+		
+		if active_data != null and active_data.rtc_scene != null:
+			attempt_build(active_data)
 		else:
-			print("Error: Missing BuildingData or RTC Scene in the Inspector!")
+			print("Error: No buildings unlocked or missing RTC scene!")
+			
+	elif event.is_action_pressed("switch_building_type"):
+		# Tell the manager to switch to the next one
+		BuildingManager.cycle_next_building()
 
-func attempt_build() -> void:
+
+func switch_active_building(new_data: BuildingData, new_scene: PackedScene) -> void:
+	# Overwrite the active variables with the new selections
+	building_to_place = new_data
+	building_rtc_scene = new_scene
+	
+	print("Ready to build: ", building_to_place.building_name)
+	
+	
+func attempt_build(building_data: BuildingData) -> void:
 	var can_afford = true
 	
-	# Phase 1: The Check
-	for resource_name in building_to_place.resources_needed:
-		var cost = building_to_place.resources_needed[resource_name]
-		
-		# LOOK HERE: We now check the global Inventory.resources dictionary
+	for resource_name in building_data.resources_needed:
+		var cost = building_data.resources_needed[resource_name]
 		var player_amount = Inventory.resources.get(resource_name, 0)
 		
 		if player_amount < cost:
 			can_afford = false
-			print("Not enough ", resource_name, "! Need ", cost, ", but you only have ", player_amount)
+			print("Not enough ", resource_name, "! Need ", cost, " but have ", player_amount)
 			break 
 			
-	# Phase 2: The Execution
 	if can_afford:
 		print("Resources secured! Spawning building...")
-		execute_build()
+		execute_build(building_data)
 
-func execute_build() -> void:
-	# 1. Deduct the resources using the new Autoload function
-	for resource_name in building_to_place.resources_needed:
-		var cost = building_to_place.resources_needed[resource_name]
-		
-		# LOOK HERE: We call the function so the UI signal fires properly
+# Pass the data to the execution
+func execute_build(building_data: BuildingData) -> void:
+	for resource_name in building_data.resources_needed:
+		var cost = building_data.resources_needed[resource_name]
 		Inventory.spend_resource(resource_name, cost)
 
-	# 2. Instantiate the empty RTC shell
-	var new_building = building_rtc_scene.instantiate()
+	# 1. Instantiate the shell directly from the data file!
+	var new_building = building_data.rtc_scene.instantiate()
 	
-	# 3. INJECT THE DATA 
-	new_building.data = building_to_place
+	# 2. Inject the data
+	new_building.data = building_data
 	
-	# 4. Add the building to the main game world
 	get_tree().current_scene.add_child(new_building)
 	
-	# 5. Calculate a position directly in front of the player
 	var spawn_distance = 5.0
 	var forward_direction = -global_transform.basis.z
-	
 	forward_direction.y = 0 
 	forward_direction = forward_direction.normalized()
 	
