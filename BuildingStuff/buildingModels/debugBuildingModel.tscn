@@ -1,0 +1,25 @@
+[gd_scene format=3 uid="uid://bekkn8dmewxcs"]
+
+[ext_resource type="Texture2D" uid="uid://bl1vrx58odbmi" path="res://BuildingStuff/buildingModels/buildingTextures/debug_texture.png" id="1_w75xt"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_crc0m"]
+albedo_texture = ExtResource("1_w75xt")
+
+[sub_resource type="BoxMesh" id="BoxMesh_tbhvd"]
+material = SubResource("StandardMaterial3D_crc0m")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bcqhi"]
+albedo_texture = ExtResource("1_w75xt")
+
+[sub_resource type="PrismMesh" id="PrismMesh_tbhvd"]
+material = SubResource("StandardMaterial3D_bcqhi")
+
+[node name="DefaultBuildingModel" type="Node3D" unique_id=22317760]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=513382410]
+transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, 0, 2, 0)
+mesh = SubResource("BoxMesh_tbhvd")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="." unique_id=689388728]
+transform = Transform3D(6.6909375, 0, 0, 0, 2.2895775, 0, 0, 0, 4.9816117, 0, 5, 0)
+mesh = SubResource("PrismMesh_tbhvd")

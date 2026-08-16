@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://tjwh71uu5c73"]
+
+[ext_resource type="Script" uid="uid://d0uqfcj1c72mn" path="res://BuildingStuff/buildingClasses/civicBuildings/TownHall/town_hall.gd" id="1_o4vxi"]
+[ext_resource type="Resource" uid="uid://0s7jvoi680tb" path="res://BuildingStuff/buildingClasses/civicBuildings/TownHall/default_town_hall.tres" id="2_h08xr"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_tbhvd"]
+size = Vector3(0.48388672, 1, 0.001)
+
+[node name="TownHall" type="Node3D" unique_id=912345010]
+script = ExtResource("1_o4vxi")
+data = ExtResource("2_h08xr")
+
+[node name="InteriorTrigger" type="Area3D" parent="." unique_id=1733654056]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="InteriorTrigger" unique_id=1725859338]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.25805664, 0, 0.00049999356)
+shape = SubResource("BoxShape3D_tbhvd")
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=1730816458]
+transform = Transform3D(0.86602545, 0.24999999, -0.43301272, 0, 0.8660254, 0.50000006, 0.5, -0.43301266, 0.75, -7, 6, 12)

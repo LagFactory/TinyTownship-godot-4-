@@ -1,0 +1,27 @@
+[gd_scene format=3 uid="uid://c64sybcj8yisa"]
+
+[ext_resource type="Script" uid="uid://ckj0yec5xrmaj" path="res://worldObjects/Rock/rock_debris.gd" id="1_peb7f"]
+[ext_resource type="Texture2D" uid="uid://cj8vyjlp7mb05" path="res://worldObjects/Textures/rock-texture-png-3.png" id="2_mt5tu"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_68h2w"]
+albedo_texture = ExtResource("2_mt5tu")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_83qqy"]
+
+[node name="RockDebris" type="RigidBody3D" unique_id=481433095]
+script = ExtResource("1_peb7f")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="." unique_id=2114297829]
+transform = Transform3D(0.14284703, 0, 0, 0, 0.14284703, 0, 0, 0, 0.14284703, 0, 0, 0)
+material = SubResource("StandardMaterial3D_68h2w")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1090112353]
+transform = Transform3D(0.14284703, 0, 0, 0, 0.14284703, 0, 0, 0, 0.14284703, 0, 0, 0)
+shape = SubResource("BoxShape3D_83qqy")
+
+[node name="Timer" type="Timer" parent="." unique_id=1692315208]
+unique_name_in_owner = true
+wait_time = 2.0
+one_shot = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

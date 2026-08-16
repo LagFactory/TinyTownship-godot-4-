@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="BuildingData" format=3 uid="uid://0s7jvoi680tb"]
+
+[ext_resource type="Script" uid="uid://b1rg037364ud1" path="res://BuildingStuff/building_data.gd" id="1_8eai1"]
+[ext_resource type="PackedScene" uid="uid://bekkn8dmewxcs" path="res://BuildingStuff/buildingModels/debugBuildingModel.tscn" id="1_hpeqd"]
+
+[resource]
+script = ExtResource("1_8eai1")
+resources_needed = {
+"bricks": 0,
+"mud": 0,
+"planks": 0,
+"stone": 3,
+"wood": 5
+}
+building_design = ExtResource("1_hpeqd")
+metadata/_custom_type_script = "uid://b1rg037364ud1"

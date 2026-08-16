@@ -1,10 +1,10 @@
 [gd_scene format=3 uid="uid://ckavqb25bdaul"]
 
-[ext_resource type="Texture2D" uid="uid://ckflyud50qex" path="res://checkboard.png" id="1_6nmrv"]
+[ext_resource type="Texture2D" uid="uid://ckflyud50qex" path="res://worldObjects/Textures/checkboard.png" id="1_6nmrv"]
 [ext_resource type="Script" uid="uid://dcs4o6ujlp050" path="res://tiny_township.gd" id="1_vprih"]
-[ext_resource type="PackedScene" uid="uid://ckudr8chj1kgo" path="res://player.tscn" id="2_p1qo6"]
-[ext_resource type="PackedScene" uid="uid://6mo7lrqbphwj" path="res://rock.tscn" id="3_vprih"]
-[ext_resource type="PackedScene" uid="uid://cl5eaekxll7ek" path="res://tree.tscn" id="4_6v7df"]
+[ext_resource type="PackedScene" uid="uid://ckudr8chj1kgo" path="res://PlayerStuff/player.tscn" id="2_p1qo6"]
+[ext_resource type="PackedScene" uid="uid://6mo7lrqbphwj" path="res://worldObjects/Rock/rock.tscn" id="3_vprih"]
+[ext_resource type="PackedScene" uid="uid://cl5eaekxll7ek" path="res://worldObjects/Tree/tree.tscn" id="4_6v7df"]
 
 [sub_resource type="Environment" id="Environment_tbhvd"]
 
