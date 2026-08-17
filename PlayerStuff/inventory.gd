@@ -25,7 +25,13 @@ func spend_resource(item_type: String, amount: int) -> void:
 	if not resources.has(item_type):
 		resources[item_type] = 0
 		
-	# Deduct the cost
+	# --- THE NEGATIVE GUARD ---
+	# Check if subtracting the amount would drop the total below zero
+	if resources[item_type] < amount:
+		print("Warning: Attempted to spend ", amount, " ", item_type, " but only have ", resources[item_type], "!")
+		return # Abort the function immediately so no math or signals execute
+		
+	# Deduct the cost safely
 	resources[item_type] -= amount
 	
 	# Emit the signal so your UI knows the number went down

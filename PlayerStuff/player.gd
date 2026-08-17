@@ -18,16 +18,6 @@ extends CharacterBody3D
 @onready var interaction_detector: RayCast3D = %interaction_detector
 @onready var dynamic_label: Label3D = %interact_label
 
-#---- building settings ----
-@export var building_to_place: BuildingData
-@export var building_rtc_scene: PackedScene
-
-
-
-# A simple toggle tracker for the temporary input
-var is_building_town_hall: bool = true
-
-
 
 var current_target: Node3D = null
 
@@ -59,14 +49,6 @@ func _unhandled_input(event):
 		# Tell the manager to switch to the next one
 		BuildingManager.cycle_next_building()
 
-
-func switch_active_building(new_data: BuildingData, new_scene: PackedScene) -> void:
-	# Overwrite the active variables with the new selections
-	building_to_place = new_data
-	building_rtc_scene = new_scene
-	
-	print("Ready to build: ", building_to_place.building_name)
-	
 	
 func attempt_build(building_data: BuildingData) -> void:
 	var can_afford = true

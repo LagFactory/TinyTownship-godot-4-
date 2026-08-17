@@ -4,7 +4,7 @@ class_name Building extends Node3D
 @export var data: BuildingData
 
 # 2. DYNAMIC STATE (Variables that change during gameplay)
-@export var worker_ocupants_list: Array[String] = []
+@export var worker_ocupants_list: Array[String] = [] #will be Array[citizen uuid] later but data type not formateed yet
 @export var inventory: Dictionary = {}
 
 @onready var building_name_label: Label3D = $BuildingName

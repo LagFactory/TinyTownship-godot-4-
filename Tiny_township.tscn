@@ -33,4 +33,4 @@ material = SubResource("StandardMaterial3D_tbhvd")
 transform = Transform3D(0.9431943, 0.12877235, 0.30627134, -0.3322415, 0.3655694, 0.869468, 0, -0.92183334, 0.3875865, 55.628212, 23.03962, 30.358912)
 
 [node name="Player" parent="." unique_id=837442009 instance=ExtResource("2_p1qo6")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.358955, 3.5346956, -6.2191963)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.358955, 403.5347, -6.2191963)
