@@ -2,8 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://ckflyud50qex"
-path.s3tc="res://.godot/imported/checkboard.png-9506ac0497ce7ee03a773f9efcd54684.s3tc.ctex"
+uid="uid://x8kqpw2xiq3h"
+path.s3tc="res://.godot/imported/Grass003_1K-JPG_Roughness.jpg-aaabaf1c71a319384bc0d55082a1053a.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://worldObjects/Textures/checkboard.png"
-dest_files=["res://.godot/imported/checkboard.png-9506ac0497ce7ee03a773f9efcd54684.s3tc.ctex"]
+source_file="res://worldObjects/Textures/Grass/Grass003_1K-JPG_Roughness.jpg"
+dest_files=["res://.godot/imported/Grass003_1K-JPG_Roughness.jpg-aaabaf1c71a319384bc0d55082a1053a.s3tc.ctex"]
 
 [params]
 

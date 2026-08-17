@@ -6,28 +6,31 @@ extends WorldEnvironment
 @export var tree_count: int = 500
 @export var rock_count: int = 100
 
+# 1. New variables to link your Terrain3D and define the spawn area size
+@export var terrain: Terrain3D
+@export var map_size: float = 1024.0 # Represents one default Terrain3D region
+
 func _ready():
-	var world_surface = %CSGBox3D
+	# Safety check to ensure the terrain is connected
+	if terrain == null or terrain.data == null:
+		push_error("Terrain3D is missing or data is not initialized!")
+		return
 	
-	var surface_size = world_surface.size
-	var surface_pos = world_surface.global_position
+	# Calculate boundaries based on the map size centered at (0, 0, 0)
+	var half_size = map_size / 2.0
+	var min_x = -half_size
+	var max_x = half_size
+	var min_z = -half_size
+	var max_z = half_size
 	
-	var min_x = surface_pos.x - (surface_size.x / 2.0)
-	var max_x = surface_pos.x + (surface_size.x / 2.0)
-	
-	var min_z = surface_pos.z - (surface_size.z / 2.0)
-	var max_z = surface_pos.z + (surface_size.z / 2.0)
-	
-	var top_y = surface_pos.y + (surface_size.y / 2.0)
-	
-	# We use 'await' here because the spawn function must pause to wait for physics updates
 	for i in range(tree_count):
-		await spawn_with_spacing(tree_scene, min_x, max_x, min_z, max_z, top_y)
+		# We no longer pass y_pos here
+		await spawn_with_spacing(tree_scene, min_x, max_x, min_z, max_z)
 		
 	for i in range(rock_count):
-		await spawn_with_spacing(rock_scene, min_x, max_x, min_z, max_z, top_y)
+		await spawn_with_spacing(rock_scene, min_x, max_x, min_z, max_z)
 
-func spawn_with_spacing(scene: PackedScene, min_x: float, max_x: float, min_z: float, max_z: float, y_pos: float):
+func spawn_with_spacing(scene: PackedScene, min_x: float, max_x: float, min_z: float, max_z: float):
 	if scene == null:
 		return
 		
@@ -43,7 +46,21 @@ func spawn_with_spacing(scene: PackedScene, min_x: float, max_x: float, min_z: f
 	var candidate_pos = Vector3.ZERO
 	
 	while attempt < max_attempts and not successfully_placed:
-		candidate_pos = Vector3(randf_range(min_x, max_x), y_pos, randf_range(min_z, max_z))
+		# Pick a random X and Z coordinate
+		var random_x = randf_range(min_x, max_x)
+		var random_z = randf_range(min_z, max_z)
+		
+		# Ask Terrain3D for the exact height of the ground
+		var ground_height = terrain.data.get_height(Vector3(random_x, 0, random_z))
+		
+	
+		# If the height is Not a Number (e.g., outside a painted region), skip this spot
+		if is_nan(ground_height):
+			attempt += 1
+			continue
+			
+		# Compile the final Vector3 with the safe height
+		candidate_pos = Vector3(random_x, ground_height, random_z)
 		
 		if position_is_valid(candidate_pos, obj_type, like_dist, any_dist):
 			successfully_placed = true
@@ -56,34 +73,26 @@ func spawn_with_spacing(scene: PackedScene, min_x: float, max_x: float, min_z: f
 		instance.global_position = candidate_pos
 		instance.rotation_degrees.y = randf_range(0.0, 360.0)
 		
-		# CRITICAL: Pause execution for one physics tick. 
-		# This gives Godot time to register the new object's collision shape in the world.
 		await get_tree().physics_frame
 	else:
 		instance.queue_free()
 		print("Warning: Could not find a safe spot to spawn a ", obj_type)
 
 func position_is_valid(target_pos: Vector3, new_object_type: String, like_dist: float, any_dist: float) -> bool:
-	# 1. Access the physical space of the game world
 	var space_state = get_viewport().get_world_3d().direct_space_state
 	
-	# 2. Create an invisible sphere to act as our scanner
 	var sphere = SphereShape3D.new()
-	sphere.radius = max(like_dist, any_dist) # Make it as big as our largest requirement
+	sphere.radius = max(like_dist, any_dist) 
 	
-	# 3. Configure the scan parameters
 	var query = PhysicsShapeQueryParameters3D.new()
 	query.shape = sphere
 	query.transform = Transform3D(Basis(), target_pos)
 	
-	# 4. Perform the scan! Returns an array of dictionaries for everything touched.
 	var hits = space_state.intersect_shape(query)
 	
 	for hit in hits:
 		var collider = hit.collider
 		
-		# Try to find the object_type variable. 
-		# We check both the collider itself and its parent node just in case.
 		var hit_type = "unknown"
 		if "object_type" in collider:
 			hit_type = collider.object_type

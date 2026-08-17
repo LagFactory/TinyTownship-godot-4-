@@ -1,23 +1,18 @@
 [gd_scene format=3 uid="uid://ckavqb25bdaul"]
 
-[ext_resource type="Script" uid="uid://dcs4o6ujlp050" path="res://tiny_township.gd" id="1_vprih"]
 [ext_resource type="PackedScene" uid="uid://ckudr8chj1kgo" path="res://PlayerStuff/player.tscn" id="2_p1qo6"]
-[ext_resource type="PackedScene" uid="uid://6mo7lrqbphwj" path="res://worldObjects/Rock/rock.tscn" id="3_vprih"]
-[ext_resource type="PackedScene" uid="uid://cl5eaekxll7ek" path="res://worldObjects/Tree/tree.tscn" id="4_6v7df"]
 [ext_resource type="PackedScene" uid="uid://d263pqnjwumjq" path="res://default_terrain.tscn" id="5_0dtun"]
 
 [sub_resource type="Environment" id="Environment_tbhvd"]
 
 [node name="World" type="WorldEnvironment" unique_id=227412170]
 environment = SubResource("Environment_tbhvd")
-script = ExtResource("1_vprih")
-tree_scene = ExtResource("4_6v7df")
-rock_scene = ExtResource("3_vprih")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=799617877]
 transform = Transform3D(0.9431943, 0.12877235, 0.30627134, -0.3322415, 0.3655694, 0.869468, 0, -0.92183334, 0.3875865, 55.628212, 23.03962, 30.358912)
 
 [node name="Player" parent="." unique_id=837442009 instance=ExtResource("2_p1qo6")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.358955, 403.5347, -6.2191963)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.6410446, 9.5346985, 3.7808037)
 
 [node name="Terrain3D" parent="." unique_id=2136660094 instance=ExtResource("5_0dtun")]
+unique_name_in_owner = true

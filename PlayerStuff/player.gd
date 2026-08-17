@@ -117,33 +117,38 @@ func _physics_process(delta):
 	if interaction_detector.is_colliding():
 		var collider = interaction_detector.get_collider()
 		if collider != null:
-			var root_instance = collider.get_parent()
 			
-			if root_instance != null:
-				# If it is a harvestable object, assign it to new_target
-				if root_instance.has_method("harvest_action"):
-					new_target = root_instance 
-					
-					# Update the label text if the object has it
-					if "interact_text" in new_target:
-						dynamic_label.text = new_target.interact_text
-					
-					# Check for a custom offset, use the exported default if missing
-					var offset_distance = default_label_offset
-					if "label_offset" in new_target:
-						offset_distance = new_target.label_offset
-					
-					# Calculate positioning
-					var target_pos = new_target.global_position
-					var cam_pos = %PlayerViewCam.global_position
-					var direction_to_cam = target_pos.direction_to(cam_pos)
-					
-					# Push label toward camera using our dynamic distance, and adjust height
-					dynamic_label.global_position = target_pos + (direction_to_cam * offset_distance)
-					dynamic_label.global_position.y += label_height_offset
-					
-					# Show the label
-					dynamic_label.visible = true
+			# Check both the collider itself and its parent to find the harvest function
+			var interactable_node = null
+			if collider.has_method("harvest_action"):
+				interactable_node = collider
+			elif collider.get_parent() != null and collider.get_parent().has_method("harvest_action"):
+				interactable_node = collider.get_parent()
+			
+			# If we found a valid harvestable object, assign it to new_target
+			if interactable_node != null:
+				new_target = interactable_node 
+				
+				# Update the label text if the object has it
+				if "interact_text" in new_target:
+					dynamic_label.text = new_target.interact_text
+				
+				# Check for a custom offset, use the exported default if missing
+				var offset_distance = default_label_offset
+				if "label_offset" in new_target:
+					offset_distance = new_target.label_offset
+				
+				# Calculate positioning
+				var target_pos = new_target.global_position
+				var cam_pos = %PlayerViewCam.global_position
+				var direction_to_cam = target_pos.direction_to(cam_pos)
+				
+				# Push label toward camera using our dynamic distance, and adjust height
+				dynamic_label.global_position = target_pos + (direction_to_cam * offset_distance)
+				dynamic_label.global_position.y += label_height_offset
+				
+				# Show the label
+				dynamic_label.visible = true
 				
 	# 3. Handle looking away
 	if new_target == null:

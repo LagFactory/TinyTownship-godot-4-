@@ -10,6 +10,18 @@ var harvested = false
 var interact_text: String = "Press E to harvest rock"
 var label_offset: = 1.1
 
+func _ready() -> void:
+	# 1. Ask the main scene to find the Terrain3D node automatically
+	var terrain = get_tree().current_scene.find_child("Terrain3D", true, false)
+	
+	# 2. If it found the terrain, ask for the height at this exact X and Z coordinate
+	if terrain != null and terrain.data != null:
+		var ground_height = terrain.data.get_height(global_position)
+		
+		# 3. If the coordinate is valid, move the rock to that height
+		if not is_nan(ground_height):
+			global_position.y = ground_height
+
 func harvest_action() -> void:
 	if harvested == false:
 		harvested = true 
