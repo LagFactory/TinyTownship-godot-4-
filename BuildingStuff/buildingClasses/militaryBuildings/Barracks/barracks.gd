@@ -5,4 +5,3 @@ class_name Barracks extends MilitaryBuilding
 
 func _ready() -> void:
 	super._ready()
-	military_type = MilitaryBuildingsType.BARRACKS

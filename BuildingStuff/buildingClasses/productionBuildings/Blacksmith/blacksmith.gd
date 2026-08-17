@@ -6,4 +6,3 @@ class_name Blacksmith extends ProductionBuilding
 
 func _ready() -> void:
 	super._ready()
-	production_type = ProductionBuildingsType.BLACKSMITH

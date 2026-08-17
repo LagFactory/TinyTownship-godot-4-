@@ -5,4 +5,4 @@ class_name Carpenter extends ProductionBuilding
 
 func _ready() -> void:
 	super._ready()
-	production_type = ProductionBuildingsType.CARPENTER
+	

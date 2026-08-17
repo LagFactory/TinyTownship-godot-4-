@@ -5,4 +5,3 @@ class_name Courier extends CivicBuilding
 
 func _ready() -> void:
 	super._ready()
-	civic_type = CivilBuildingsType.COURIER

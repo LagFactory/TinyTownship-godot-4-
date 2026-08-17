@@ -5,4 +5,4 @@ class_name Forester extends ResourceCollectionBuilding
 
 func _ready() -> void:
 	super._ready()
-	collection_type = ResourceCollectionBuildingsType.FORESTER
+	

@@ -5,4 +5,3 @@ class_name Mine extends ResourceCollectionBuilding
 
 func _ready() -> void:
 	super._ready()
-	collection_type = ResourceCollectionBuildingsType.MINE

@@ -5,4 +5,4 @@ class_name GuardTower extends MilitaryBuilding
 
 func _ready() -> void:
 	super._ready()
-	military_type = MilitaryBuildingsType.GUARDTOWER
+	
