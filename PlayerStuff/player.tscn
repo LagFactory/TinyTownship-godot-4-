@@ -1,11 +1,7 @@
 [gd_scene format=3 uid="uid://ckudr8chj1kgo"]
 
 [ext_resource type="Script" uid="uid://br1seygui4q2b" path="res://PlayerStuff/player.gd" id="1_ccdj2"]
-[ext_resource type="Resource" uid="uid://0s7jvoi680tb" path="res://BuildingStuff/buildingClasses/civicBuildings/TownHall/default_town_hall.tres" id="2_bp6bt"]
-[ext_resource type="PackedScene" uid="uid://tjwh71uu5c73" path="res://BuildingStuff/buildingClasses/civicBuildings/TownHall/town_hall_RTC.tscn" id="3_reqw4"]
 [ext_resource type="Script" uid="uid://dsxpgckvmbf4x" path="res://PlayerStuff/ui_manager.gd" id="4_j1wi3"]
-[ext_resource type="Resource" uid="uid://b5moi0biym3bj" path="res://BuildingStuff/buildingClasses/civicBuildings/Courier/default_courier.tres" id="4_reqw4"]
-[ext_resource type="PackedScene" uid="uid://h45d2sri31xv" path="res://BuildingStuff/buildingClasses/civicBuildings/Courier/courier_RTC.tscn" id="5_j1wi3"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_tbhvd"]
 
@@ -30,12 +26,6 @@ height = 2.1986084
 
 [node name="Player" type="CharacterBody3D" unique_id=1018601618]
 script = ExtResource("1_ccdj2")
-building_to_place = ExtResource("2_bp6bt")
-building_rtc_scene = ExtResource("3_reqw4")
-town_hall_data = ExtResource("2_bp6bt")
-town_hall_rtc = ExtResource("3_reqw4")
-courier_data = ExtResource("4_reqw4")
-courier_rtc = ExtResource("5_j1wi3")
 
 [node name="CharacterVisuals" type="Node3D" parent="." unique_id=1272610638]
 
@@ -125,7 +115,6 @@ process_mode = 3
 script = ExtResource("4_j1wi3")
 
 [node name="PauseMenu" type="Panel" parent="UIManager" unique_id=2057329619]
-visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -138,7 +127,7 @@ layout_mode = 0
 offset_left = 382.0
 offset_top = 189.0
 offset_right = 771.0
-offset_bottom = 420.0
+offset_bottom = 506.0
 size_flags_horizontal = 4
 size_flags_vertical = 4
 
@@ -158,6 +147,16 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 50
 text = "Quit to Desktop
 "
+
+[node name="SaveButton" type="Button" parent="UIManager/PauseMenu/VBoxContainer" unique_id=265381295]
+layout_mode = 2
+theme_override_font_sizes/font_size = 50
+text = "SAVE GAME"
+
+[node name="LoadButton" type="Button" parent="UIManager/PauseMenu/VBoxContainer" unique_id=231999257]
+layout_mode = 2
+theme_override_font_sizes/font_size = 50
+text = "LOAD GAME"
 
 [node name="InventoryMenu" type="Panel" parent="UIManager" unique_id=1752388577]
 visible = false

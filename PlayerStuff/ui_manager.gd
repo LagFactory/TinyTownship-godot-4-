@@ -6,6 +6,8 @@ extends CanvasLayer
 # UI Element References
 @onready var resume_button = $PauseMenu/VBoxContainer/ResumeButton
 @onready var quit_button = $PauseMenu/VBoxContainer/QuitButton
+@onready var save_button = $PauseMenu/VBoxContainer/SaveButton
+@onready var load_button = $PauseMenu/VBoxContainer/LoadButton
 
 # We replaced the hardcoded labels with a single dynamic label
 @onready var resources_label = $InventoryMenu/VBoxContainer/ResourcesLabel
@@ -16,6 +18,8 @@ func _ready() -> void:
 	
 	resume_button.pressed.connect(_on_resume_pressed)
 	quit_button.pressed.connect(_on_quit_pressed)
+	save_button.pressed.connect(_on_save_pressed)
+	load_button.pressed.connect(_on_load_pressed)
 	
 	Inventory.resource_changed.connect(_on_resource_changed)
 	
@@ -86,3 +90,15 @@ func _on_resource_changed(_item_type: String, _new_amount: int) -> void:
 	# Because the label is completely dynamic, any change to any resource 
 	# just requires us to rebuild and refresh the text block!
 	update_inventory_display()
+	
+func _on_save_pressed() -> void:
+	# Calls the save function we built in the Autoload
+	SaveManager.save_game()
+	
+func _on_load_pressed() -> void:
+	# Calls the load function in the Autoload
+	SaveManager.load_game()
+	
+	# Close the pause menu so the player returns to the game 
+	# and can see their loaded state
+	close_all_menus()

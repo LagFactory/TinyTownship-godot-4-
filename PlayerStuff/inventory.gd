@@ -38,3 +38,20 @@ func spend_resource(item_type: String, amount: int) -> void:
 	resource_changed.emit(item_type, resources[item_type])
 	
 	print("Spent ", amount, " ", item_type, "! Remaining: ", resources[item_type])
+	
+func pack_save_data() -> Dictionary:
+	# Since your resources are already in a dictionary, 
+	# we can just return it directly!
+	var data: Dictionary = {}
+	data["resources"] = resources 
+	return data
+
+func unpack_save_data(data: Dictionary) -> void:
+	if data.has("resources"):
+		resources = data["resources"]
+		
+		# Force the UI to update by emitting your existing signal
+		# We can just pass empty/dummy values for the signal parameters 
+		# since the UI rebuilds the whole list anyway
+		resource_changed.emit("", 0) 
+		print("Inventory loaded successfully.")
