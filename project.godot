@@ -20,6 +20,7 @@ config/icon="res://icon.svg"
 Inventory="*uid://cgddealqjkww6"
 BuildingManager="*uid://bmsteoh4xf1d6"
 SaveManager="*uid://c3ynwvm1judnv"
+PlayerManager="*uid://0li4jgpsda68"
 
 [display]
 

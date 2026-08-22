@@ -10,6 +10,7 @@ func save_game() -> void:
 	
 	# 1. Ask the Inventory for its data
 	master_data["inventory"] = Inventory.pack_save_data()
+	master_data["player"] = PlayerManager.pack_save_data()
 	
 	# Ensure the save folder exists
 	var dir = DirAccess.open("user://")
@@ -47,6 +48,8 @@ func load_game() -> void:
 		# 4. Give the data back to the Inventory
 		if master_data.has("inventory"):
 			Inventory.unpack_save_data(master_data["inventory"])
+		if master_data.has("player"):
+			PlayerManager.unpack_save_data(master_data["player"])
 			
 		print("Game loaded successfully.")
 	else:

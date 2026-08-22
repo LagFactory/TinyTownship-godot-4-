@@ -26,6 +26,7 @@ func _ready():
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	interaction_detector.add_exception(self)
 	dynamic_label.visible = false
+	PlayerManager.register_player(self)
 
 func _unhandled_input(event):
 	if event is InputEventMouseMotion:
