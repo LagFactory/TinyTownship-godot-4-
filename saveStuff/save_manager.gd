@@ -5,19 +5,24 @@ const DEBUG_SAVE_PATH = "user://saveStuff/save_game.json"
 
 @export var is_debug_mode: bool = true
 
+var _saveables: Dictionary = {}
+
+func register_saveable(save_key: String, node: Node) -> void:
+	_saveables[save_key] = node
+
 func save_game() -> void:
 	var master_data: Dictionary = {}
 	
-	# 1. Ask the Inventory for its data
-	master_data["inventory"] = Inventory.pack_save_data()
-	master_data["player"] = PlayerManager.pack_save_data()
+	# Ask each registered saveable for its data
+	for save_key in _saveables:
+		master_data[save_key] = _saveables[save_key].pack_save_data()
 	
 	# Ensure the save folder exists
 	var dir = DirAccess.open("user://")
 	if not dir.dir_exists("saveStuff"):
 		dir.make_dir("saveStuff")
 	
-	# 2. Save binary
+	# Save binary
 	var bin_file = FileAccess.open(SAVE_PATH, FileAccess.WRITE)
 	if bin_file:
 		bin_file.store_var(master_data) 
@@ -25,7 +30,7 @@ func save_game() -> void:
 	else:
 		printerr("Failed to open binary save file for writing.")
 
-	# 3. Save JSON debug file
+	# Save JSON debug file
 	if is_debug_mode:
 		var json_file = FileAccess.open(DEBUG_SAVE_PATH, FileAccess.WRITE)
 		if json_file:
@@ -45,11 +50,10 @@ func load_game() -> void:
 		var master_data: Dictionary = bin_file.get_var()
 		bin_file.close()
 		
-		# 4. Give the data back to the Inventory
-		if master_data.has("inventory"):
-			Inventory.unpack_save_data(master_data["inventory"])
-		if master_data.has("player"):
-			PlayerManager.unpack_save_data(master_data["player"])
+		# Give the data back to each registered saveable
+		for save_key in master_data:
+			if _saveables.has(save_key):
+				_saveables[save_key].unpack_save_data(master_data[save_key])
 			
 		print("Game loaded successfully.")
 	else:

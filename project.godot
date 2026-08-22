@@ -17,10 +17,10 @@ config/icon="res://icon.svg"
 
 [autoload]
 
-Inventory="*uid://cgddealqjkww6"
-BuildingManager="*uid://bmsteoh4xf1d6"
 SaveManager="*uid://c3ynwvm1judnv"
-PlayerManager="*uid://0li4jgpsda68"
+Inventory="*uid://iazxzrfkbmbn"
+BuildingManager="*uid://bmsteoh4xf1d6"
+PlayerManager="*uid://0wur68ggckw7"
 
 [display]
 
