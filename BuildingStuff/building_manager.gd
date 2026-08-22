@@ -13,4 +13,3 @@ func cycle_next_building() -> void:
 	if available_buildings.is_empty():
 		return
 	_active_index = (_active_index + 1) % available_buildings.size()
-	print("Active building: ", available_buildings[_active_index].building_name)
