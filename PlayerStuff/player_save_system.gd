@@ -8,7 +8,7 @@ func _ready() -> void:
 
 func register_player(node: CharacterBody3D) -> void:
 	player_node = node
-	print("Player registered to PlayerManager.")
+	print("Player registered to PlayerSaveSystem.")
 
 func pack_save_data() -> Dictionary:
 	var data: Dictionary = {}
