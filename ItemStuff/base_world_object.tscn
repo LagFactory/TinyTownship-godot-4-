@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://bvmomsvrvf0pd"]
+
+[ext_resource type="Script" uid="uid://ii7jn5hwkf8u" path="res://base_world_object.gd" id="1_h0f6j"]
+
+[node name="base_world_object" type="RigidBody3D" unique_id=281893474]
+script = ExtResource("1_h0f6j")
