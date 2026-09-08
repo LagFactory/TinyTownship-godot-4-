@@ -19,6 +19,15 @@ func _get_inventory_key(item: BaseItem) -> String:
 		return base_key + "_" + str(_unique_id_counter)
 	return base_key
 
+func _make_unique_instance(item: BaseItem) -> BaseItem:
+	# Non-stackable items (tools, equipment, etc.) carry per-instance state
+	# (e.g. durability). They must never share the same Resource object with
+	# the source that spawned them (a tree/rock's item_drop, another slot,
+	# or a saved copy), or mutating one would silently mutate all of them.
+	if item.is_stackable():
+		return item
+	return item.duplicate()
+
 func add_item(item: BaseItem, amount: int = 1) -> bool:
 	if item == null or amount <= 0 or not item.validate():
 		return false
@@ -34,9 +43,9 @@ func add_item(item: BaseItem, amount: int = 1) -> bool:
 		return false
 		
 	resources[key] = total
-	items[key] = item
+	items[key] = _make_unique_instance(item)
 	
-	item_changed.emit(item, total)
+	item_changed.emit(items[key], total)
 	resource_changed.emit(item.get_item_key(), get_total_resource_amount(item.get_item_key()))
 	return true
 
@@ -159,9 +168,7 @@ func unpack_save_data(data: Dictionary) -> void:
 					var item := ResourceLoader.load(path) as BaseItem
 					if item != null and item.validate():
 						# Ensure unique objects remain unique after loading
-						if not item.is_stackable():
-							item = item.duplicate()
-						items[str(key).to_lower()] = item
+						items[str(key).to_lower()] = _make_unique_instance(item)
 						
 	for key in resources:
 		resource_changed.emit(key, resources[key])
