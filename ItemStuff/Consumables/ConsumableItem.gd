@@ -13,15 +13,14 @@ func _init() -> void:
 
 # Overriding the base function
 func use(user: Node) -> bool:
-	if effect_type == ConsumableEffect.HEALTH:
-		# Assuming your player script has a heal() function
-		if user.has_method("heal"):
-			user.heal(restore_amount)
-			return true # Item was successfully used
-			
-	elif effect_type == ConsumableEffect.HUNGER:
-		if user.has_method("eat"):
-			user.eat(restore_amount)
-			return true
-			
-	return false # Failsafe if the item could not be used
+	var methods := {
+		ConsumableEffect.HEALTH: "heal",
+		ConsumableEffect.STAMINA: "restore_stamina",
+		ConsumableEffect.HUNGER: "eat",
+		ConsumableEffect.AMMO: "add_ammo"
+	}
+	var method_name: String = methods.get(effect_type, "")
+	if not method_name.is_empty() and user != null and user.has_method(method_name):
+		user.call(method_name, restore_amount)
+		return true
+	return false

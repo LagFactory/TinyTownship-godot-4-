@@ -2,5 +2,11 @@
 
 [ext_resource type="Script" uid="uid://ii7jn5hwkf8u" path="res://base_world_object.gd" id="1_h0f6j"]
 
+[sub_resource type="SphereShape3D" id="SphereShape3D_pickup"]
+radius = 0.35
+
 [node name="base_world_object" type="RigidBody3D" unique_id=281893474]
 script = ExtResource("1_h0f6j")
+
+[node name="PickupCollision" type="CollisionShape3D" parent="."]
+shape = SubResource("SphereShape3D_pickup")
