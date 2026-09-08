@@ -26,6 +26,7 @@ func refresh_ui() -> void:
 		var new_slot = slot_scene.instantiate() as InventorySlot
 		grid.add_child(new_slot)
 		new_slot.update_slot(item_data, amount)
+		new_slot.slot_activated.connect(_on_slot_activated)
 
 # Signal callbacks to update UI if it is open while collecting items
 func _on_inventory_updated(_item: BaseItem, _new_amount: int) -> void:
@@ -35,3 +36,9 @@ func _on_inventory_updated(_item: BaseItem, _new_amount: int) -> void:
 func _on_resource_updated(_item_type: String, _new_amount: int) -> void:
 	if visible:
 		refresh_ui()
+
+func _on_slot_activated(item: BaseItem) -> void:
+	var user: Node = PlayerSaveSystem.player_node
+	if user == null or not is_instance_valid(user):
+		return
+	Inventory.use_item(item, user)
