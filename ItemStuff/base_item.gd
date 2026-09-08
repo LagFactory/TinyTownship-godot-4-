@@ -1,20 +1,31 @@
 extends Resource
-# Registering the class name makes it appear in the Godot node/resource creation menu
 class_name BaseItem
 
-# Basic identification
+enum ItemType { RESOURCE, CONSUMABLE, TOOL, EQUIPMENT, QUEST, COMPONENT }
+
+@export_category("Basic Info")
 @export var id: String = "base_item"
 @export var display_name: String = "Unknown Item"
 @export_multiline var description: String = ""
+@export var item_type: ItemType = ItemType.RESOURCE
 
-# Visuals
-@export var icon: Texture2D # For the UI inventory menu
-@export var drop_mesh: PackedScene # The 3D model to spawn when dropped
+@export_category("Visuals")
+@export var icon: Texture2D 
+@export var drop_mesh: PackedScene 
 
-# Stacking rules
-@export var is_stackable: bool = true
+@export_category("Stats")
 @export var max_stack_size: int = 99
+@export var weight: float = 0.1
+@export var base_value: int = 0
 
-# You can add a function here that all items share, like being inspected
+# Helper function to check if stacking is possible
+func is_stackable() -> bool:
+	return max_stack_size > 1
+
 func get_inspection_text() -> String:
 	return display_name + ": " + description
+
+# Virtual function meant to be overridden by inherited items (e.g., ToolItem, ConsumableItem)
+func use(_user: Node) -> bool:
+	print("This item has no use effect.")
+	return false
