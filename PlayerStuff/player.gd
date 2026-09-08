@@ -15,11 +15,21 @@ extends CharacterBody3D
 @export var default_label_offset: float = 1.5
 @export var label_height_offset: float = 0.5
 
+# --- PLACEHOLDER STATS (stubs for item-use hooks until real systems exist) ---
+@export var max_health: int = 100
+@export var health: int = 100
+@export var max_stamina: int = 100
+@export var stamina: int = 100
+@export var max_hunger: int = 100
+@export var hunger: int = 100
+@export var ammo: int = 0
+
 @onready var interaction_detector: RayCast3D = %interaction_detector
 @onready var dynamic_label: Label3D = %interact_label
 
 
 var current_target: Node3D = null
+var equipped_items: Dictionary = {} # EquipmentItem.EquipmentSlot -> EquipmentItem
 
 
 func _ready():
@@ -27,6 +37,34 @@ func _ready():
 	interaction_detector.add_exception(self)
 	dynamic_label.visible = false
 	PlayerSaveSystem.register_player(self)
+
+# --- ITEM USE HOOKS ---
+# Called by ConsumableItem/ToolItem/EquipmentItem.use(). These are minimal
+# stubs; replace the placeholder stat math once real health/stamina/hunger/
+# ammo/equipment systems exist.
+
+func heal(amount: int) -> void:
+	health = clampi(health + amount, 0, max_health)
+	print("Healed for ", amount, ". Health: ", health, "/", max_health)
+
+func restore_stamina(amount: int) -> void:
+	stamina = clampi(stamina + amount, 0, max_stamina)
+	print("Restored ", amount, " stamina. Stamina: ", stamina, "/", max_stamina)
+
+func eat(amount: int) -> void:
+	hunger = clampi(hunger + amount, 0, max_hunger)
+	print("Ate for ", amount, " hunger. Hunger: ", hunger, "/", max_hunger)
+
+func add_ammo(amount: int) -> void:
+	ammo += amount
+	print("Added ", amount, " ammo. Ammo: ", ammo)
+
+func use_tool(tool_item: ToolItem) -> void:
+	print("Used tool: ", tool_item.display_name, " (durability ", tool_item.durability, "/", tool_item.max_durability, ")")
+
+func equip_item(equipment_item: EquipmentItem) -> void:
+	equipped_items[equipment_item.slot] = equipment_item
+	print("Equipped ", equipment_item.display_name, " in slot ", equipment_item.slot)
 
 func _unhandled_input(event):
 	if event is InputEventMouseMotion:

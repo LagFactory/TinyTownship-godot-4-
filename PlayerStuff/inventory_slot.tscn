@@ -7,10 +7,13 @@
 custom_minimum_size = Vector2(64, 64)
 offset_right = 64.0
 offset_bottom = 64.0
+mouse_filter = 0
+mouse_default_cursor_shape = 2
 script = ExtResource("1_crwt6")
 
 [node name="MarginContainer" type="MarginContainer" parent="." unique_id=612518491]
 layout_mode = 2
+mouse_filter = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme_override_constants/margin_left = 4
@@ -21,12 +24,14 @@ theme_override_constants/margin_bottom = 4
 [node name="ItemIcon" type="TextureRect" parent="MarginContainer" unique_id=1617065691]
 custom_minimum_size = Vector2(36, 36)
 layout_mode = 2
+mouse_filter = 2
 texture = ExtResource("2_138ih")
 expand_mode = 1
 stretch_mode = 5
 
 [node name="QuantityLabel" type="Label" parent="." unique_id=113082925]
 layout_mode = 2
+mouse_filter = 2
 size_flags_horizontal = 8
 size_flags_vertical = 8
 text = "99"
