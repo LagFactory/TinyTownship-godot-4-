@@ -3,51 +3,121 @@ extends Node
 signal resource_changed(item_type: String, new_amount: int)
 signal item_changed(item: BaseItem, new_amount: int)
 
-# String keys preserve the original save format and add_resource API.
 var resources: Dictionary[String, int] = {}
 var items: Dictionary[String, BaseItem] = {}
+var _unique_id_counter: int = 0
 
 func _ready() -> void:
 	SaveManager.register_saveable("inventory", self)
 
+# --- ITEM MANAGEMENT ---
+
+func _get_inventory_key(item: BaseItem) -> String:
+	var base_key: String = item.get_item_key()
+	if not item.is_stackable():
+		_unique_id_counter += 1
+		return base_key + "_" + str(_unique_id_counter)
+	return base_key
+
 func add_item(item: BaseItem, amount: int = 1) -> bool:
 	if item == null or amount <= 0 or not item.validate():
 		return false
-	var key := item.get_item_key()
-	var total := resources.get(key, 0) + amount
-	if total > item.max_stack_size and item.max_stack_size == 1:
+		
+	var key: String = _get_inventory_key(item)
+	var actual_amount: int = amount
+	
+	if not item.is_stackable() and amount > 1:
+		actual_amount = 1
+		
+	var total: int = resources.get(key, 0) + actual_amount
+	if total > item.max_stack_size:
 		return false
+		
 	resources[key] = total
 	items[key] = item
+	
 	item_changed.emit(item, total)
-	resource_changed.emit(key, total)
+	resource_changed.emit(item.get_item_key(), get_total_resource_amount(item.get_item_key()))
 	return true
 
 func remove_item(item: BaseItem, amount: int = 1) -> bool:
 	if item == null or amount <= 0:
 		return false
-	return spend_resource(item.get_item_key(), amount)
-
-func has_item(item: BaseItem, amount: int = 1) -> bool:
-	return item != null and amount > 0 and resources.get(item.get_item_key(), 0) >= amount
-
-func add_resource(item_type: String, amount: int) -> bool:
-	if item_type.strip_edges().is_empty() or amount <= 0:
+		
+	var target_key: String = ""
+	if item.is_stackable():
+		target_key = item.get_item_key()
+	else:
+		for key in items:
+			if items[key] == item:
+				target_key = key
+				break
+				
+	if target_key == "" or resources.get(target_key, 0) < amount:
 		return false
-	var key := item_type.strip_edges().to_lower()
-	resources[key] = resources.get(key, 0) + amount
-	resource_changed.emit(key, resources[key])
+		
+	resources[target_key] -= amount
+	if resources[target_key] == 0:
+		resources.erase(target_key)
+		items.erase(target_key)
+		
+	item_changed.emit(item, resources.get(target_key, 0))
+	resource_changed.emit(item.get_item_key(), get_total_resource_amount(item.get_item_key()))
 	return true
 
-func spend_resource(item_type: String, amount: int) -> bool:
-	var key := item_type.strip_edges().to_lower()
-	if key.is_empty() or amount <= 0 or resources.get(key, 0) < amount:
+func has_item(item: BaseItem, amount: int = 1) -> bool:
+	if item == null or amount <= 0:
 		return false
-	resources[key] -= amount
-	if resources[key] == 0:
-		resources.erase(key)
-		items.erase(key)
-	resource_changed.emit(key, resources.get(key, 0))
+		
+	if item.is_stackable():
+		return resources.get(item.get_item_key(), 0) >= amount
+		
+	for key in items:
+		if items[key] == item:
+			return resources.get(key, 0) >= amount
+	return false
+
+# --- STRING-BASED CRAFTING / BUILDING ---
+
+func get_total_resource_amount(base_id: String) -> int:
+	var target_key: String = base_id.strip_edges().to_lower()
+	var total_found: int = 0
+	for key in resources.keys():
+		if key == target_key or key.begins_with(target_key + "_"):
+			total_found += resources[key]
+	return total_found
+
+func spend_resource(base_id: String, amount: int) -> bool:
+	var target_key: String = base_id.strip_edges().to_lower()
+	if target_key.is_empty() or amount <= 0:
+		return false
+		
+	var total_available: int = get_total_resource_amount(target_key)
+	if total_available < amount:
+		return false
+		
+	var amount_left: int = amount
+	var keys_to_remove: Array[String] = []
+	
+	for key in resources.keys():
+		if amount_left <= 0:
+			break
+			
+		if key == target_key or key.begins_with(target_key + "_"):
+			var available: int = resources[key]
+			var deduct: int = min(available, amount_left)
+			
+			resources[key] -= deduct
+			amount_left -= deduct
+			
+			if resources[key] == 0:
+				keys_to_remove.append(key)
+				
+	for k in keys_to_remove:
+		resources.erase(k)
+		items.erase(k)
+		
+	resource_changed.emit(target_key, get_total_resource_amount(target_key))
 	return true
 
 func use_item(item: BaseItem, user: Node) -> bool:
@@ -56,6 +126,8 @@ func use_item(item: BaseItem, user: Node) -> bool:
 	if not item.use(user):
 		return false
 	return remove_item(item)
+
+# --- SAVE & LOAD ---
 
 func pack_save_data() -> Dictionary:
 	var item_records: Dictionary = {}
@@ -76,6 +148,7 @@ func unpack_save_data(data: Dictionary) -> void:
 			var amount := int(saved[key])
 			if amount > 0:
 				resources[str(key).to_lower()] = amount
+				
 	var saved_items: Variant = data.get("items", {})
 	if saved_items is Dictionary:
 		for key in saved_items:
@@ -85,6 +158,10 @@ func unpack_save_data(data: Dictionary) -> void:
 				if not path.is_empty() and ResourceLoader.exists(path):
 					var item := ResourceLoader.load(path) as BaseItem
 					if item != null and item.validate():
+						# Ensure unique objects remain unique after loading
+						if not item.is_stackable():
+							item = item.duplicate()
 						items[str(key).to_lower()] = item
+						
 	for key in resources:
 		resource_changed.emit(key, resources[key])

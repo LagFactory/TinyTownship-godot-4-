@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="EquipmentItem" format=3 uid="uid://b7wxid1pi2wvg"]
+
+[ext_resource type="Script" uid="uid://cr3nw2eoq21d8" path="res://ItemStuff/itemBlueprints/Equipment/EquipmentItem.gd" id="1_t5k8n"]
+
+[resource]
+script = ExtResource("1_t5k8n")
+slot = 4
+id = "silver_bracelet"
+display_name = "Silver Bracelet"
+max_stack_size = 1
+metadata/_custom_type_script = "uid://cr3nw2eoq21d8"

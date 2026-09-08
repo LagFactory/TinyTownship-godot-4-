@@ -1,0 +1,28 @@
+[gd_scene format=3 uid="uid://cj00tg27cadts"]
+
+[ext_resource type="Script" uid="uid://hee5xl3chnj3" path="res://inventory_ui.gd" id="1_0twgt"]
+[ext_resource type="PackedScene" uid="uid://c74xu7fotontr" path="res://PlayerStuff/inventory_slot.tscn" id="2_ukbse"]
+
+[node name="InventoryUI" type="Control" unique_id=444854915]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_0twgt")
+slot_scene = ExtResource("2_ukbse")
+
+[node name="Background" type="Panel" parent="." unique_id=1792747214]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1112966579]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="GridContainer" type="GridContainer" parent="MarginContainer" unique_id=663153337]
+layout_mode = 2
+columns = 8

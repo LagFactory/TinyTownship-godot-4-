@@ -18,9 +18,9 @@ config/icon="res://icon.svg"
 [autoload]
 
 SaveManager="*uid://c3ynwvm1judnv"
-Inventory="*uid://iazxzrfkbmbn"
 BuildingManager="*uid://bmsteoh4xf1d6"
 PlayerSaveSystem="*uid://0wur68ggckw7"
+Inventory="*uid://cgddealqjkww6"
 
 [display]
 

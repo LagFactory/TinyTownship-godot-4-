@@ -40,3 +40,5 @@ func get_inspection_text() -> String:
 
 func use(_user: Node) -> bool:
 	return false
+	
+	

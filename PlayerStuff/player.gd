@@ -125,7 +125,7 @@ func _physics_process(delta):
 			if collider.has_method("interact") or collider.has_method("harvest_action"):
 				interactable_node = collider
 			elif collider.get_parent() != null:
-				var parent := collider.get_parent()
+				var parent: Node = collider.get_parent()
 				if parent.has_method("interact") or parent.has_method("harvest_action"):
 					interactable_node = parent
 			

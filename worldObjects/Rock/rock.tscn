@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://dpvowi2x3yx8j" path="res://worldObjects/Rock/rock.gd" id="1_68h2w"]
 [ext_resource type="Texture2D" uid="uid://cj8vyjlp7mb05" path="res://worldObjects/Textures/rock-texture-png-3.png" id="1_o0qsl"]
+[ext_resource type="Resource" uid="uid://blqajn7h5kjn6" path="res://ItemStuff/spacificItems/Resources/stone.tres" id="2_6pp30"]
 [ext_resource type="PackedScene" uid="uid://c64sybcj8yisa" path="res://worldObjects/Rock/rock_debris.tscn" id="2_wecdg"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_o7ih3"]
@@ -24,6 +25,7 @@ radius = 0.9371705
 
 [node name="Rock" type="StaticBody3D" unique_id=169021130]
 script = ExtResource("1_68h2w")
+item_drop = ExtResource("2_6pp30")
 debris_scene = ExtResource("2_wecdg")
 
 [node name="CSGBakedMeshInstance3D" type="MeshInstance3D" parent="." unique_id=1518518455]

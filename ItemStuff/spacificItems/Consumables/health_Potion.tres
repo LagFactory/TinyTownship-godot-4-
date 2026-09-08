@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="ConsumableItem" format=3 uid="uid://bu7yubihqusit"]
+
+[ext_resource type="Script" uid="uid://fptsbabe018c" path="res://ItemStuff/itemBlueprints/Consumables/ConsumableItem.gd" id="1_e1rs1"]
+
+[resource]
+script = ExtResource("1_e1rs1")
+id = "health_potion"
+display_name = "Health Potion"
+metadata/_custom_type_script = "uid://fptsbabe018c"

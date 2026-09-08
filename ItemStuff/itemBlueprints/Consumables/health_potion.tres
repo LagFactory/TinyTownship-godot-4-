@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="ConsumableItem" format=3]
+
+[ext_resource type="Script" uid="uid://fptsbabe018c" path="res://ItemStuff/itemBlueprints/Consumables/ConsumableItem.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "health_potion"
+display_name = "Health Potion"
+description = "Restores health when consumed."
+effect_type = 0
+restore_amount = 25

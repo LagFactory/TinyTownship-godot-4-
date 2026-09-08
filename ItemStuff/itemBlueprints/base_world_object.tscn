@@ -8,5 +8,5 @@ radius = 0.35
 [node name="base_world_object" type="RigidBody3D" unique_id=281893474]
 script = ExtResource("1_h0f6j")
 
-[node name="PickupCollision" type="CollisionShape3D" parent="."]
+[node name="PickupCollision" type="CollisionShape3D" parent="." unique_id=618294967]
 shape = SubResource("SphereShape3D_pickup")

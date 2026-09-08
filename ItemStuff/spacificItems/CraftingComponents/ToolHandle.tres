@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="ComponentItem" format=3 uid="uid://dmd6ud42a21mp"]
+
+[ext_resource type="Script" uid="uid://bhbbcu045rmou" path="res://ItemStuff/itemBlueprints/CraftingComponents/ComponentItem.gd" id="1_0vtl6"]
+
+[resource]
+script = ExtResource("1_0vtl6")
+id = "wooden_handle"
+display_name = "Wooden Handle"
+metadata/_custom_type_script = "uid://bhbbcu045rmou"

@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="ResourceItem" format=3 uid="uid://blqajn7h5kjn6"]
+
+[ext_resource type="Script" uid="uid://2g3o73o5gn6v" path="res://ItemStuff/itemBlueprints/Resources/ResourceItem.gd" id="1_fepn3"]
+[ext_resource type="Texture2D" uid="uid://cc0usfmj0ddwg" path="res://ItemStuff/spacificItems/Resources/Icons/Stone.png" id="1_fi2ya"]
+
+[resource]
+script = ExtResource("1_fepn3")
+material_category = 1
+id = "raw_stone"
+display_name = "Raw Stone"
+icon = ExtResource("1_fi2ya")
+metadata/_custom_type_script = "uid://2g3o73o5gn6v"

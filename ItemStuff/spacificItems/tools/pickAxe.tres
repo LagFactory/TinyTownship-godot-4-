@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="ToolItem" format=3 uid="uid://dsopnn12tvuo"]
+
+[ext_resource type="Script" uid="uid://drjjmb6a6so7o" path="res://ItemStuff/itemBlueprints/Tools/ToolItem.gd" id="1_ou5e0"]
+
+[resource]
+script = ExtResource("1_ou5e0")
+tool_category = 0
+id = "stone_pickaxe"
+display_name = "Stone Pickaxe"
+metadata/_custom_type_script = "uid://drjjmb6a6so7o"

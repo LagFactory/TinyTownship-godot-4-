@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="ResourceItem" format=3 uid="uid://cuso80brnp8j0"]
+
+[ext_resource type="Script" uid="uid://2g3o73o5gn6v" path="res://ItemStuff/itemBlueprints/Resources/ResourceItem.gd" id="1_jg5vb"]
+[ext_resource type="Texture2D" uid="uid://c5sn2fk1teweu" path="res://ItemStuff/spacificItems/Resources/Icons/Log.png" id="1_u85a7"]
+
+[resource]
+script = ExtResource("1_jg5vb")
+id = "raw_wood"
+display_name = "wood"
+icon = ExtResource("1_u85a7")
+metadata/_custom_type_script = "uid://2g3o73o5gn6v"
