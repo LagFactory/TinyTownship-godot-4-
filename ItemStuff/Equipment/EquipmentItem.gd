@@ -11,3 +11,9 @@ enum EquipmentSlot { HEAD, CHEST, LEGS, FEET, ACCESSORY }
 func _init() -> void:
 	item_type = ItemType.EQUIPMENT
 	max_stack_size = 1
+
+func use(user: Node) -> bool:
+	if user != null and user.has_method("equip_item"):
+		user.equip_item(self)
+		return true
+	return false

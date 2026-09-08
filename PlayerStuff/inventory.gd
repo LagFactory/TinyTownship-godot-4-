@@ -1,57 +1,90 @@
 extends Node
 
-# 1. Define the custom signal and the exact data it will pass along
 signal resource_changed(item_type: String, new_amount: int)
+signal item_changed(item: BaseItem, new_amount: int)
 
-var resources = {
-	
-}
+# String keys preserve the original save format and add_resource API.
+var resources: Dictionary[String, int] = {}
+var items: Dictionary[String, BaseItem] = {}
 
-func add_resource(item_type: String, amount: int) -> void:
-	# If the item doesn't exist in the dictionary yet, create it and initialize it to 0
-	if not resources.has(item_type):
-		resources[item_type] = 0
-		
-	# Add the collected amount to the total
-	resources[item_type] += amount
-	
-	# Emit the signal to the rest of the game
-	resource_changed.emit(item_type, resources[item_type])
-	
-	print("Collected ", amount, " ", item_type, "! Total: ", resources[item_type])
+func _ready() -> void:
+	SaveManager.register_saveable("inventory", self)
 
-func spend_resource(item_type: String, amount: int) -> void:
-	# If the item doesn't exist in the dictionary yet, create it and set it to 0
-	if not resources.has(item_type):
-		resources[item_type] = 0
-		
-	# --- THE NEGATIVE GUARD ---
-	# Check if subtracting the amount would drop the total below zero
-	if resources[item_type] < amount:
-		print("Warning: Attempted to spend ", amount, " ", item_type, " but only have ", resources[item_type], "!")
-		return # Abort the function immediately so no math or signals execute
-		
-	# Deduct the cost safely
-	resources[item_type] -= amount
-	
-	# Emit the signal so your UI knows the number went down
-	resource_changed.emit(item_type, resources[item_type])
-	
-	print("Spent ", amount, " ", item_type, "! Remaining: ", resources[item_type])
-	
+func add_item(item: BaseItem, amount: int = 1) -> bool:
+	if item == null or amount <= 0 or not item.validate():
+		return false
+	var key := item.get_item_key()
+	var total := resources.get(key, 0) + amount
+	if total > item.max_stack_size and item.max_stack_size == 1:
+		return false
+	resources[key] = total
+	items[key] = item
+	item_changed.emit(item, total)
+	resource_changed.emit(key, total)
+	return true
+
+func remove_item(item: BaseItem, amount: int = 1) -> bool:
+	if item == null or amount <= 0:
+		return false
+	return spend_resource(item.get_item_key(), amount)
+
+func has_item(item: BaseItem, amount: int = 1) -> bool:
+	return item != null and amount > 0 and resources.get(item.get_item_key(), 0) >= amount
+
+func add_resource(item_type: String, amount: int) -> bool:
+	if item_type.strip_edges().is_empty() or amount <= 0:
+		return false
+	var key := item_type.strip_edges().to_lower()
+	resources[key] = resources.get(key, 0) + amount
+	resource_changed.emit(key, resources[key])
+	return true
+
+func spend_resource(item_type: String, amount: int) -> bool:
+	var key := item_type.strip_edges().to_lower()
+	if key.is_empty() or amount <= 0 or resources.get(key, 0) < amount:
+		return false
+	resources[key] -= amount
+	if resources[key] == 0:
+		resources.erase(key)
+		items.erase(key)
+	resource_changed.emit(key, resources.get(key, 0))
+	return true
+
+func use_item(item: BaseItem, user: Node) -> bool:
+	if item == null or not has_item(item):
+		return false
+	if not item.use(user):
+		return false
+	return remove_item(item)
+
 func pack_save_data() -> Dictionary:
-	# Since your resources are already in a dictionary, 
-	# we can just return it directly!
-	var data: Dictionary = {}
-	data["resources"] = resources 
-	return data
+	var item_records: Dictionary = {}
+	for key in items:
+		var item: BaseItem = items[key]
+		var record := {"amount": resources.get(key, 0)}
+		if not item.resource_path.is_empty():
+			record["path"] = item.resource_path
+		item_records[key] = record
+	return {"resources": resources.duplicate(), "items": item_records}
 
 func unpack_save_data(data: Dictionary) -> void:
-	if data.has("resources"):
-		resources = data["resources"]
-		
-		# Force the UI to update by emitting your existing signal
-		# We can just pass empty/dummy values for the signal parameters 
-		# since the UI rebuilds the whole list anyway
-		resource_changed.emit("", 0) 
-		print("Inventory loaded successfully.")
+	resources.clear()
+	items.clear()
+	var saved: Variant = data.get("resources", {})
+	if saved is Dictionary:
+		for key in saved:
+			var amount := int(saved[key])
+			if amount > 0:
+				resources[str(key).to_lower()] = amount
+	var saved_items: Variant = data.get("items", {})
+	if saved_items is Dictionary:
+		for key in saved_items:
+			var record: Variant = saved_items[key]
+			if record is Dictionary:
+				var path := str(record.get("path", ""))
+				if not path.is_empty() and ResourceLoader.exists(path):
+					var item := ResourceLoader.load(path) as BaseItem
+					if item != null and item.validate():
+						items[str(key).to_lower()] = item
+	for key in resources:
+		resource_changed.emit(key, resources[key])

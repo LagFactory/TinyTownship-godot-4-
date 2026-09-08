@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ToolItem" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://ItemStuff/Tools/ToolItem.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "stone_axe"
+display_name = "Stone Axe"
+description = "A basic tool for harvesting trees."
+tool_category = 1
+tool_tier = 1
+max_durability = 100
+durability = 100

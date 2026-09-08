@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="ResourceItem" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://ItemStuff/Resources/ResourceItem.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "stone"
+display_name = "Stone"
+description = "A sturdy building material."
+material_category = 1

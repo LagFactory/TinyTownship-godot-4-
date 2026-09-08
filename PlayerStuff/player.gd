@@ -34,9 +34,11 @@ func _unhandled_input(event):
 		%PlayerViewCam.rotation_degrees.x -= event.relative.y * mouse_sensitivity_y
 		%PlayerViewCam.rotation_degrees.x = clamp(%PlayerViewCam.rotation_degrees.x, camera_pitch_min, camera_pitch_max)
 	elif event.is_action_pressed("interact"):
-		# Verify we are looking at something, and that it has the harvest function
-		if current_target != null and current_target.has_method("harvest_action"):
-			current_target.harvest_action()
+		if current_target != null:
+			if current_target.has_method("interact"):
+				current_target.interact()
+			elif current_target.has_method("harvest_action"):
+				current_target.harvest_action()
 	if event.is_action_pressed("build"):
 		# Ask the manager for the data
 		var active_data = BuildingManager.get_active_building()
@@ -119,19 +121,22 @@ func _physics_process(delta):
 		var collider = interaction_detector.get_collider()
 		if collider != null:
 			
-			# Check both the collider itself and its parent to find the harvest function
-			var interactable_node = null
-			if collider.has_method("harvest_action"):
+			var interactable_node: Node = null
+			if collider.has_method("interact") or collider.has_method("harvest_action"):
 				interactable_node = collider
-			elif collider.get_parent() != null and collider.get_parent().has_method("harvest_action"):
-				interactable_node = collider.get_parent()
+			elif collider.get_parent() != null:
+				var parent := collider.get_parent()
+				if parent.has_method("interact") or parent.has_method("harvest_action"):
+					interactable_node = parent
 			
 			# If we found a valid harvestable object, assign it to new_target
 			if interactable_node != null:
 				new_target = interactable_node 
 				
 				# Update the label text if the object has it
-				if "interact_text" in new_target:
+				if new_target.has_method("get_interact_text"):
+					dynamic_label.text = new_target.get_interact_text()
+				elif "interact_text" in new_target:
 					dynamic_label.text = new_target.interact_text
 				
 				# Check for a custom offset, use the exported default if missing

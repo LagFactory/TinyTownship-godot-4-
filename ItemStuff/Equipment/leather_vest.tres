@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="EquipmentItem" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://ItemStuff/Equipment/EquipmentItem.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "leather_vest"
+display_name = "Leather Vest"
+description = "Light protection for a settler."
+slot = 1
+defense_bonus = 5
